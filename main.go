@@ -12,10 +12,6 @@ type Post struct {
 	Text  string
 }
 
-type Posts struct {
-	posts []Post
-}
-
 const SERVERPORT = ":8000"
 
 func HomePageHandler(w http.ResponseWriter, r *http.Request) {
