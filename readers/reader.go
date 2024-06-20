@@ -5,7 +5,14 @@ import (
 	"log"
 	"os"
 	"strings"
+
+	"github.com/gomarkdown/markdown"
 )
+
+func MdToHTML(md []byte) string {
+	html := markdown.ToHTML(md, nil, nil)
+	return string(html)
+}
 
 func ReadMdDir(dirName string) []string {
 	var posts []string
@@ -23,14 +30,14 @@ func ReadMdDir(dirName string) []string {
 
 func ReadMdFiles(filenames []string) []string {
 	var posts []string
-	for i, file := range filenames {
+	for _, file := range filenames {
 		readFiles, err := os.ReadFile("./posts/" + file)
 		if err != nil {
 			log.Printf("Error while reading file: %s", err)
 		}
 		readedFiles := strings.TrimSpace(string(readFiles))
 		posts = append(posts, string(readedFiles))
-		fmt.Printf("Post %d: %s\n", i+1, readFiles)
+		// fmt.Printf("Post %d: %s\n", i+1, readFiles)
 	}
 	return posts
 }

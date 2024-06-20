@@ -2,43 +2,20 @@ package main
 
 import (
 	"fmt"
-	"gomark/readers"
+	"gomark/handlers"
+	"html/template"
 	"net/http"
-	"text/template"
 )
-
-type Post struct {
-	Title string
-	Text  string
-}
 
 const SERVERPORT = ":8000"
 
-func HomePageHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("got / request")
-	dir := readers.ReadMdDir("./posts")
-	files := readers.ReadMdFiles(dir)
-
-	var posted []Post
-	for i := range files {
-		posted = append(posted, Post{
-			Text: files[i],
-		})
-	}
-
-	fmt.Println(posted[0])
-	t, err := template.ParseFiles("./template/index.html")
-	if err != nil {
-		fmt.Println("Error while parsing: ", err)
-	}
-
-	for i := range posted {
-		t.Execute(w, posted[i])
-	}
+func safeHTML(s string) template.HTML {
+	return template.HTML(s)
 }
 
 func main() {
-	http.HandleFunc("/", HomePageHandler)
+	http.HandleFunc("/", handlers.HomePageHandler)
+	http.HandleFunc("/testing", handlers.TestingHandler)
 
 	err := http.ListenAndServe(SERVERPORT, nil)
 	if err != nil {
