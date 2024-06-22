@@ -3,10 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <title>Document</title>
+    <link href="./style/index.css" rel="stylesheet">
 </head>
 <body>
     {{range .Posts}}
-        {{.}}
+        <div class="posts">{{.}}</div>
     {{end}}
+
+    <h>Hello world</h>
 </body>
 </html>

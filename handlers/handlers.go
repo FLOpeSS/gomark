@@ -5,6 +5,7 @@ import (
 	"gomark/readers"
 	"html/template"
 	"net/http"
+	"path"
 )
 
 type Post struct {
@@ -28,6 +29,32 @@ func TestingHandler(w http.ResponseWriter, r *http.Request) {
 		fmt.Printf("Printing one at the time: %s", posts[i])
 	}
 }
+
+//
+// func JsHandler(w http.ResponseWriter, r *http.Request) {
+// 	w.Header().Set("Content-type", "application/javascript")
+// 	filenames := r.URL.Path[len("/style/"):]
+// 	filenames = path.Clean(filenames)
+// 	fmt.Println(filenames)
+// 	http.ServeFile(w, r, "./style/"+filenames)
+// }
+
+func CssHandler(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-type", "text/css")
+	filenames := r.URL.Path[len("/style/"):]
+	filenames = path.Clean(filenames)
+	fmt.Println(filenames)
+	http.ServeFile(w, r, "./style/"+filenames)
+}
+
+// func CssHandler(w http.ResponseWriter, r *http.Request) {
+// 	w.Header().Set("Content-type", "text/css")
+//
+// 	filename := r.URL.Path[len("/fonts/style/"):]
+// 	filename = path.Clean(filename)
+//
+// 	http.ServeFile(w, r, "./fonts/style/"+filename)
+// }
 
 func HomePageHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("got / request")
