@@ -20,9 +20,12 @@ func ReadMdDir(dirName string) []string {
 	if err != nil {
 		log.Printf("Error occurred: %s", err)
 	}
-	for _, value := range dir {
+	for i, value := range dir {
 		name := value.Name()
 		fmt.Println(name)
+		if i+1 == len(dir) {
+			fmt.Printf("\n")
+		}
 		posts = append(posts, name)
 	}
 	return posts
