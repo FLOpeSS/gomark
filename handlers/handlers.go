@@ -13,6 +13,27 @@ type Post struct {
 	Posts []template.HTML
 }
 
+func HomePageHandler(w http.ResponseWriter, r *http.Request) {
+	fmt.Printf("GET /request\n")
+	dir := readers.ReadMdDir("./posts")
+	files := readers.ReadMdFiles(dir)
+
+	// Converting md files to html and appending title and posts to Post structure(inst)
+	var inst Post
+	for i, value := range files {
+		inst.Posts = append(inst.Posts, template.HTML(readers.MdToHTML([]byte(value))))
+		inst.Title = append(inst.Title, dir[i])
+	}
+	fmt.Println("Titles: ", inst.Title)
+
+	t, err := template.ParseFiles("./template/index.html")
+	if err != nil {
+		fmt.Println("Error while parsing: ", err)
+	}
+
+	t.Execute(w, inst)
+}
+
 func TestingHandler(w http.ResponseWriter, r *http.Request) {
 	var readed string
 	var posts []string
@@ -45,25 +66,4 @@ func CssHandler(w http.ResponseWriter, r *http.Request) {
 	filenames = path.Clean(filenames)
 	fmt.Println(filenames)
 	http.ServeFile(w, r, "./style/"+filenames)
-}
-
-func HomePageHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Printf("GET /request\n")
-	dir := readers.ReadMdDir("./posts")
-	files := readers.ReadMdFiles(dir)
-
-	// Converting md files to html and appending title and posts to Post structure(inst)
-	var inst Post
-	for i, value := range files {
-		inst.Posts = append(inst.Posts, template.HTML(readers.MdToHTML([]byte(value))))
-		inst.Title = append(inst.Title, dir[i])
-	}
-	fmt.Println("Titles: ", inst.Title)
-
-	t, err := template.ParseFiles("./template/index.html")
-	if err != nil {
-		fmt.Println("Error while parsing: ", err)
-	}
-
-	t.Execute(w, inst)
 }
