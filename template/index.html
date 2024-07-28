@@ -1,15 +1,74 @@
+<!-- <!DOCTYPE html> -->
+<!-- <html lang="en"> -->
+<!-- <head> -->
+<!--     <meta charset="UTF-8"> -->
+<!--     <title>Document</title> -->
+<!--     <link rel="stylesheet" type="text/css" href="./style/index.css"> -->
+<!-- </head> -->
+<!-- <body> -->
+<!--     <div> -->
+<!--         {{range .Title}} -->
+<!--         <div class="title"> -->
+<!--             {{.}} -->
+<!--         </div> -->
+<!--         {{end}} -->
+<!--  -->
+<!--         {{range .Posts}} -->
+<!--         <div class="posts"> -->
+<!--             {{.}} -->
+<!--         </div> -->
+<!--         {{end}} -->
+<!--     </div> -->
+<!-- </body> -->
+<!-- </html> -->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Document</title>
-    <link href="./style/index.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Blog</title>
+    <link rel="stylesheet" type="text/css" href="./style/index.css">
 </head>
 <body>
-    {{range .Posts}}
-        <div class="posts">{{.}}</div>
-    {{end}}
+    <header>
+        <h1>My Blog</h1>
+    </header>
+    <nav>
+        <a href="#">Home</a>
+        <a href="#">About</a>
+        <a href="#">Contact</a>
+    </nav>
+    <!-- <div class="container"> -->
+    <!--     {{range .Posts}} -->
+    <!--     <div class="posts"> -->
+    <!--         <h2 class="Titles">{{.Title}}</h2> -->
+    <!--         <h2 class="Contents">{.Contents}</h2> -->
+    <!--     </div> -->
+    <!--     {{end}} -->
 
-    <h>Hello world</h>
+    <div class="container">
+        {{range .Posts}}
+        <div class="posts">
+            <!-- <h2 class="Titles">{{.Title}}</h2> -->
+            <h2 class="Contents">{.Contents}</h2>
+        </div>
+        {{end}}
+    </div>
+
+    <!--     <div class="post"> -->
+    <!--         <h2>Blog Post Title 2</h2> -->
+    <!--         <p>Date: July 17, 2024</p> -->
+    <!--         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p> -->
+    <!--     </div> -->
+    <!--     <div class="post"> -->
+    <!--         <h2>Blog Post Title 3</h2> -->
+    <!--         <p>Date: July 16, 2024</p> -->
+    <!--         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p> -->
+    <!--     </div> -->
+    <!-- </div> -->
+    <!-- <footer> -->
+    <!--     <p>&copy; 2024 My Blog</p> -->
+    <!-- </footer> -->
 </body>
 </html>

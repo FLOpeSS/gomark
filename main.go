@@ -9,9 +9,11 @@ import (
 const SERVERPORT = ":8000"
 
 func main() {
+
 	http.HandleFunc("/", handlers.HomePageHandler)
 	http.HandleFunc("/testing", handlers.TestingHandler)
 
+	// Handler to provide css style
 	http.HandleFunc("/style/", handlers.CssHandler)
 
 	err := http.ListenAndServe(SERVERPORT, nil)

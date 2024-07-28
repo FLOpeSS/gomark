@@ -33,14 +33,15 @@ func ReadMdDir(dirName string) []string {
 
 func ReadMdFiles(filenames []string) []string {
 	var posts []string
-	for _, file := range filenames {
+
+	for i, file := range filenames {
 		readFiles, err := os.ReadFile("./posts/" + file)
 		if err != nil {
 			log.Printf("Error while reading file: %s", err)
 		}
 		readedFiles := strings.TrimSpace(string(readFiles))
 		posts = append(posts, string(readedFiles))
-		// fmt.Printf("Post %d: %s\n", i+1, readFiles)
+		fmt.Printf("Post %d: %s\n", i+1, readFiles)
 	}
 	return posts
 }
