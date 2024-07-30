@@ -6,11 +6,39 @@ import (
 	"html/template"
 	"net/http"
 	"path"
+	"reflect"
 )
+
+var dot byte = 46
 
 type Post struct {
 	Title []string
 	Posts []template.HTML
+}
+
+type Posts struct {
+	Posts []Post
+}
+
+func filterFile(filename string) []byte {
+	var filtered []byte
+	for i := range filename {
+		if filename[i] == dot {
+			break
+		}
+		filtered = append(filtered, filename[i])
+	}
+	return filtered
+}
+
+func TestingFilter(w http.ResponseWriter, r *http.Request) {
+	posts := []string{"post1.md", "post2.md"}
+	var result1 []string
+	for _, value := range posts {
+		result1 = append(result1, string(filterFile(value)))
+	}
+	fmt.Println(result1)
+	fmt.Println("Len of filtered result: ", len(result1))
 }
 
 func HomePageHandler(w http.ResponseWriter, r *http.Request) {
@@ -22,9 +50,11 @@ func HomePageHandler(w http.ResponseWriter, r *http.Request) {
 	var inst Post
 	for i, value := range files {
 		inst.Posts = append(inst.Posts, template.HTML(readers.MdToHTML([]byte(value))))
-		inst.Title = append(inst.Title, dir[i])
+		inst.Title = append(inst.Title, string(filterFile(dir[i])))
 	}
+
 	fmt.Println("Titles: ", inst.Title)
+	fmt.Println("Titles, type: ", reflect.TypeOf(inst.Title))
 
 	t, err := template.ParseFiles("./template/index.html")
 	if err != nil {

@@ -11,6 +11,7 @@ const SERVERPORT = ":8000"
 func main() {
 	http.HandleFunc("/", handlers.HomePageHandler)
 	http.HandleFunc("/testing", handlers.TestingHandler)
+	http.HandleFunc("/testingFilter", handlers.TestingFilter)
 
 	http.HandleFunc("/style/", handlers.CssHandler)
 
