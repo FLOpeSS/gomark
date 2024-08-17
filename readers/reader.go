@@ -1,6 +1,7 @@
 package readers
 
 import (
+	"bytes"
 	"fmt"
 	"log"
 	"os"
@@ -24,7 +25,7 @@ func ReadMdDir(dirName string) []string {
 	}
 	for i, value := range dir {
 		name := value.Name()
-		fmt.Println(name)
+		fmt.Println("unfiltered posts: ", name)
 		if i+1 == len(dir) {
 			fmt.Printf("\n")
 		}
@@ -47,17 +48,17 @@ func ReadMdFiles(filenames []string) []string {
 	return posts
 }
 
-func FilterFile(filename string) []byte {
+func FilterFileName(filename string) []byte {
 	var filtered []byte
 	for i := range filename {
 		if filename[i] == dot {
 			break
 		}
 
-		if filename[i] == 95 {
-			fmt.Printf("this is an: %s\n", string(filename[i]))
-		}
 		filtered = append(filtered, filename[i])
 	}
+
+	filtered = bytes.Replace(filtered, []byte("_"), []byte(" "), -1)
+	fmt.Printf("Filtered Posts: %s\n", filtered)
 	return filtered
 }

@@ -29,12 +29,10 @@ func HomePageHandler(w http.ResponseWriter, r *http.Request) {
 	var postItems []PostItem
 	for i, value := range files {
 		postItems = append(postItems, PostItem{
-			Title: string(readers.FilterFile(dir[i])),
+			Title: string(readers.FilterFileName(dir[i])),
 			Post:  template.HTML(readers.MdToHTML([]byte(value))),
 		})
-		fmt.Printf("Title %d: %s\n", i+1, postItems[i].Title)
 	}
-	// fmt.Println("Post Items itereted: ", postItems[])
 
 	t, err := template.ParseFiles("./template/index.html")
 	if err != nil {
