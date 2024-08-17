@@ -1,67 +1,68 @@
 package handlers
 
 import (
+	"encoding/json"
 	"fmt"
 	"gomark/readers"
 	"html/template"
 	"net/http"
 	"path"
-	"reflect"
+	"time"
 )
 
-var dot byte = 46
-
-type Post struct {
-	Title []string
-	Posts []template.HTML
+type Data struct {
+	Message string `json:"message"`
 }
 
-type Posts struct {
-	Posts []Post
-}
-
-func filterFile(filename string) []byte {
-	var filtered []byte
-	for i := range filename {
-		if filename[i] == dot {
-			break
-		}
-		filtered = append(filtered, filename[i])
-	}
-	return filtered
-}
-
-func TestingFilter(w http.ResponseWriter, r *http.Request) {
-	posts := []string{"post1.md", "post2.md"}
-	var result1 []string
-	for _, value := range posts {
-		result1 = append(result1, string(filterFile(value)))
-	}
-	fmt.Println(result1)
-	fmt.Println("Len of filtered result: ", len(result1))
+type PostItem struct {
+	Title string
+	Post  template.HTML
 }
 
 func HomePageHandler(w http.ResponseWriter, r *http.Request) {
+	start := time.Now()
 	fmt.Printf("GET /request\n")
 	dir := readers.ReadMdDir("./posts")
 	files := readers.ReadMdFiles(dir)
 
-	// Converting md files to html and appending title and posts to Post structure(inst)
-	var inst Post
+	// Create a slice of PostItem to hold titles and posts together
+	var postItems []PostItem
 	for i, value := range files {
-		inst.Posts = append(inst.Posts, template.HTML(readers.MdToHTML([]byte(value))))
-		inst.Title = append(inst.Title, string(filterFile(dir[i])))
+		postItems = append(postItems, PostItem{
+			Title: string(readers.FilterFile(dir[i])),
+			Post:  template.HTML(readers.MdToHTML([]byte(value))),
+		})
+		fmt.Printf("Title %d: %s\n", i+1, postItems[i].Title)
 	}
-
-	fmt.Println("Titles: ", inst.Title)
-	fmt.Println("Titles, type: ", reflect.TypeOf(inst.Title))
+	// fmt.Println("Post Items itereted: ", postItems[])
 
 	t, err := template.ParseFiles("./template/index.html")
 	if err != nil {
-		fmt.Println("Error while parsing: ", err)
+		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		return
 	}
 
-	t.Execute(w, inst)
+	err = t.Execute(w, postItems) // Pass postItems to the template
+	if err != nil {
+		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+	}
+	endTime := time.Since(start)
+	fmt.Println("Function time: ", endTime)
+}
+
+func TestingTemplate(w http.ResponseWriter, r *http.Request) {
+	t, err := template.ParseFiles("./template/js.html")
+	if err != nil {
+		fmt.Printf("Error while parsing: %s", err)
+	}
+
+	t.Execute(w, nil)
+}
+
+func ApiHandler(w http.ResponseWriter, r *http.Request) {
+	data := Data{Message: "Hello, world"}
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(data)
 }
 
 func TestingHandler(w http.ResponseWriter, r *http.Request) {
@@ -84,10 +85,10 @@ func TestingHandler(w http.ResponseWriter, r *http.Request) {
 
 func JsHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-type", "application/javascript")
-	filenames := r.URL.Path[len("/style/"):]
+	filenames := r.URL.Path[len("/scripts/"):]
 	filenames = path.Clean(filenames)
 	fmt.Println(filenames)
-	http.ServeFile(w, r, "./style/"+filenames)
+	http.ServeFile(w, r, "./scripts/"+filenames)
 }
 
 func CssHandler(w http.ResponseWriter, r *http.Request) {

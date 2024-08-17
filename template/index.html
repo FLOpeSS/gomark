@@ -6,15 +6,15 @@
     <link href="./style/index.css" rel="stylesheet">
 </head>
 <body>
-    {{range .Posts}}
-        <div class="posts">{{.}}</div>
-    {{end}}
-
-    {{range .Title}}
-        <h2>{{.}}</h2>
-    {{end}}
-
-
-    <h>Hello world</h>
+    <div class="bar">
+        {{range .}}
+            <div class="post-item">
+                <h2>{{.Title}}</h2>
+                <div class="post-content">
+                    {{.Post}}
+                </div>
+            </div>
+        {{end}}
+    </div>
 </body>
 </html>

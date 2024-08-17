@@ -11,9 +11,11 @@ const SERVERPORT = ":8000"
 func main() {
 	http.HandleFunc("/", handlers.HomePageHandler)
 	http.HandleFunc("/testing", handlers.TestingHandler)
-	http.HandleFunc("/testingFilter", handlers.TestingFilter)
+	http.HandleFunc("/testingTemplate", handlers.TestingTemplate)
+	http.HandleFunc("/api/data", handlers.ApiHandler)
 
 	http.HandleFunc("/style/", handlers.CssHandler)
+	http.HandleFunc("/scripts/", handlers.JsHandler)
 
 	err := http.ListenAndServe(SERVERPORT, nil)
 	if err != nil {

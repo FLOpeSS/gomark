@@ -1,0 +1,17 @@
+/* .content { */
+/*     background-color: black; */
+/*     padding: 10cm; */
+/*     margin: 23px; */
+/* } */
+
+#content {
+    color: blue;
+    /* background-color: black; */
+    padding: 10px;
+    margin: 10px;
+}
+
+#content.border {
+    border: 6px solid pink;
+    background-color: black;
+}

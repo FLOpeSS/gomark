@@ -9,6 +9,8 @@ import (
 	"github.com/gomarkdown/markdown"
 )
 
+var dot byte = 46
+
 func MdToHTML(md []byte) string {
 	html := markdown.ToHTML(md, nil, nil)
 	return string(html)
@@ -43,4 +45,19 @@ func ReadMdFiles(filenames []string) []string {
 		// fmt.Printf("Post %d: %s\n", i+1, readFiles)
 	}
 	return posts
+}
+
+func FilterFile(filename string) []byte {
+	var filtered []byte
+	for i := range filename {
+		if filename[i] == dot {
+			break
+		}
+
+		if filename[i] == 95 {
+			fmt.Printf("this is an: %s\n", string(filename[i]))
+		}
+		filtered = append(filtered, filename[i])
+	}
+	return filtered
 }

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Exemplo AJAX com Go</title>
+    <link href="./style/js.css" rel="stylesheet">
+</head>
+<body>
+    <div id="content"></div>
+    <button onclick="loadContent()">Carregar Conteúdo</button>
+    <script>
+    function loadContent() {
+        fetch('/api/data')
+        .then(response => response.json())
+        .then(data => {
+            const content = document.getElementById('content');
+            content.innerText = data.message;
+            content.classList.add("border")
+        });
+    }
+    </script>
+</body>
+</html>
+
