@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"encoding/json"
 	"fmt"
 	"gomark/readers"
 	"html/template"
@@ -9,10 +8,6 @@ import (
 	"path"
 	"time"
 )
-
-type Data struct {
-	Message string `json:"message"`
-}
 
 type PostItem struct {
 	Title string
@@ -55,12 +50,6 @@ func TestingTemplate(w http.ResponseWriter, r *http.Request) {
 	}
 
 	t.Execute(w, nil)
-}
-
-func ApiHandler(w http.ResponseWriter, r *http.Request) {
-	data := Data{Message: "Hello, world"}
-	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(data)
 }
 
 func TestingHandler(w http.ResponseWriter, r *http.Request) {

@@ -2,19 +2,30 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Document</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Blog</title>
     <link href="./style/index.css" rel="stylesheet">
 </head>
 <body>
-    <div class="bar">
+
+    <!-- //Search bar -->
+     <div class="topnav">
+      <a class="active" href="#home">Home</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+      <input type="text" placeholder="Search.." class="search">
+    </div> 
+
+    <div class="container">
         {{range .}}
             <div class="post-item">
-                <h2>{{.Title}}</h2>
+                <h2 class="post-title">{{.Title}}</h2>
                 <div class="post-content">
                     {{.Post}}
                 </div>
             </div>
         {{end}}
     </div>
+
 </body>
 </html>
